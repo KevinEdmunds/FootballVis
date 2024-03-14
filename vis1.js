@@ -6,24 +6,18 @@ awayFilter = document.getElementById("awayFilter");
 let width = 800;
 let height = 600;
 let margin = 100;
+let yScale;
+let xScale;
 
 async function collectData(home) {
   let totalData = await processData();
 
   let homeData = getWinsArray(totalData, home);
   let awayData = getWinsArray(totalData, "away");
-
-  homeFilter.addEventListener("click", function () {
-    data = homeData;
-    BuildVisualization(data);
-  });
-  awayFilter.addEventListener("click", function () {
-    data = awayData;
-    BuildVisualization(data);
-  });
+  let svg;
 
   //  makeVis(homeData, awayData);
-  BuildVisualization(homeData);
+  BuildVisualization(homeData, awayData, svg);
 }
 
 function getWinsArray(totalData, winType) {
@@ -41,12 +35,22 @@ function getWinsArray(totalData, winType) {
   return winArray;
 }
 
-function BuildVisualization(data) {
-  console.log("cheese");
-  let svg = CreateSVG(data);
-  let xScale = CreateXScale(data, svg);
-  let yScale = CreateYScale(data, svg);
+function BuildVisualization(homeData, awayData, svg) {
+  let data;
+  svg = CreateSVG();
+  let xScale = CreateXScale(homeData, svg);
+  let yScale = CreateYScale(homeData, svg);
   PutItAllTogether(svg, xScale, yScale, data);
+
+  homeFilter.addEventListener("click", function () {
+    data = homeData;
+    UpdateData(svg, xScale, yScale, data);
+  });
+  awayFilter.addEventListener("click", function () {
+    data = awayData;
+    UpdateData(svg, xScale, yScale, data);
+  });
+  UpdateData(svg, xScale, yScale, data);
 }
 function CreateSVG() {
   let svg = d3
@@ -59,12 +63,12 @@ function CreateSVG() {
   return svg;
 }
 function CreateYScale(data, svg) {
-  let yScale = d3.scaleLinear().domain([0, 19]).range([height, 0]);
+  yScale = d3.scaleLinear().domain([0, 19]).range([height, 0]);
   svg.append("g").call(d3.axisLeft(yScale));
   return yScale;
 }
 function CreateXScale(data, svg) {
-  let xScale = d3
+  xScale = d3
     .scaleBand()
     .domain(
       data.map(function (d) {
@@ -80,6 +84,7 @@ function CreateXScale(data, svg) {
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end");
+  console.log(xScale);
   return xScale;
 }
 function PutItAllTogether(svg, xScale, yScale, data) {
@@ -91,6 +96,9 @@ function PutItAllTogether(svg, xScale, yScale, data) {
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end");
 
+  //console.log(data);
+}
+function UpdateData(svg, xScale, yScale, data) {
   svg
     .selectAll("rect")
     .data(data)
@@ -107,5 +115,4 @@ function PutItAllTogether(svg, xScale, yScale, data) {
       return height - yScale(d.wins);
     })
     .attr("fill", "#69b3a2");
-  console.log(data);
 }
