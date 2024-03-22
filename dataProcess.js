@@ -5,7 +5,7 @@ async function processData() {
   let matchData = await fetchData();
   let awayTeams = createAwayTeams(matchData);
   let visData = fetchTeamStats(awayTeams, matchData);
-  //console.log(visData);
+  console.log(visData);
   return visData;
 }
 

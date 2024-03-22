@@ -16,10 +16,13 @@ async function collectData(home) {
 
   let homeData = getWinsArray(totalData, home);
   let awayData = getWinsArray(totalData, "away");
+
+  //console.log(homeData);
   let svg;
 
   //  makeVis(homeData, awayData);
   BuildVisualization(homeData, awayData, svg);
+  return "cheese";
 }
 
 function getWinsArray(totalData, winType) {
@@ -32,8 +35,6 @@ function getWinsArray(totalData, winType) {
       return { name: data.name, wins: data.wins.away };
     });
   }
-
-  //console.log(winArray);
   return winArray;
 }
 
@@ -86,7 +87,6 @@ function CreateXScale(data, svg) {
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end");
-  console.log(xScale);
   return xScale;
 }
 function PutItAllTogether(svg, xScale, yScale, data) {
@@ -97,8 +97,6 @@ function PutItAllTogether(svg, xScale, yScale, data) {
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end");
-
-  //console.log(data);
 }
 function UpdateData(svg, xScale, yScale, data) {
   svg
