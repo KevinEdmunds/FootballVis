@@ -1,4 +1,4 @@
-//processData();
+//should make a general object which can be modified further in order to display each visualization
 
 // Process the matchData as needed
 async function processData() {
@@ -18,6 +18,7 @@ function fetchTeamStats(awayTeams, matchData) {
   });
   return visData;
 }
+
 //Create an array of unique team names from each match in the season
 function createAwayTeams(matchData) {
   let awayTeams = [];

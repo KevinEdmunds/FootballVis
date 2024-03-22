@@ -1,3 +1,5 @@
+//Bar graph with home/away wins from each team
+
 collectData("home");
 
 homeFilter = document.getElementById("homeFilter");
