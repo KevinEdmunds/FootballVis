@@ -5,8 +5,8 @@ async function CollectDataForVis2() {
   SortByHomeOrAway(totalData);
   //console.log(totalData);
   GetTeamNames(totalData);
-  GetStatsForSpecTeam(totalData, "Arsenal");
-  CreateVis2(totalData);
+  let sortedData = GetStatsForSpecTeam(totalData, "Arsenal");
+  CreateVis2(sortedData);
 }
 
 function SortByHomeOrAway(data) {
@@ -32,58 +32,51 @@ function SortByHomeOrAway(data) {
 
 /*----------------------------------------------sectiion being worked on -----------------------------------*/
 
-/*
 function GetStatsForSpecTeam(data, name) {
   let sortedData;
 
-  let index=>{}
-
-
-  function FindIndex()
-  {
-    for (i = 0; i < data.length; i++) {
-      if (data[i].name == name) {
-        return i;
+  let index = GetIndex();
+  function GetIndex() {
+    {
+      for (i = 0; i < data.length; i++) {
+        if (data[i].name == name) {
+          return i;
+        }
       }
     }
   }
+  console.log(index);
+  sortedData = [
+    {
+      location: "Home Wins",
+      result: data[index].wins.home,
+    },
+    {
+      location: "Home Draws",
+      result: data[index].draws.home,
+    },
+    {
+      location: "Home Losses",
+      result: data[index].losses.home,
+    },
+    {
+      location: "Away Wins",
+      result: data[index].wins.away,
+    },
+    {
+      location: "Away Draws",
+      result: data[index].draws.away,
+    },
+    {
+      location: "Away Losses",
+      result: data[index].losses.away,
+    },
+  ];
+  //sconsole.log(sortedData);
+  return sortedData;
+}
 
-  sortedData = data.map((team) => {
-    if (team.name == name) {
-      return {
-        teamName: team.name, // Team name for display
-        matches: [
-          {
-            location: "Home Wins",
-            result: team.wins.home,
-          },
-          {
-            location: "Home Draws",
-            result: team.draws.home,
-          },
-          {
-            location: "Home Losses",
-            result: team.losses.home,
-          },
-          {
-            location: "Away Wins",
-            result: team.wins.away,
-          },
-          {
-            location: "Away Draws",
-            result: team.draws.away,
-          },
-          {
-            location: "Away Losses",
-            result: team.losses.away,
-          },
-        ],
-      };
-    }
-  });
-  console.log(sortedData);
-}*/
-
+//A misc function that might maybebecome useful later on
 function GetTeamNames(data) {
   let sortedData;
   sortedData = data.map((team) => {

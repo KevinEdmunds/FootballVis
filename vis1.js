@@ -22,7 +22,7 @@ async function collectData(home) {
 
   //  makeVis(homeData, awayData);
   BuildVisualization(homeData, awayData, svg);
-  return "cheese";
+  //return "cheese";
 }
 
 function getWinsArray(totalData, winType) {
@@ -43,6 +43,8 @@ function BuildVisualization(homeData, awayData, svg) {
   svg = CreateSVG();
   let xScale = CreateXScale(homeData, svg);
   let yScale = CreateYScale(homeData, svg);
+  data = homeData;
+
   PutItAllTogether(svg, xScale, yScale, data);
 
   homeFilter.addEventListener("click", function () {
@@ -99,6 +101,7 @@ function PutItAllTogether(svg, xScale, yScale, data) {
     .style("text-anchor", "end");
 }
 function UpdateData(svg, xScale, yScale, data) {
+  console.log(data);
   svg
     .selectAll("rect")
     .data(data)
