@@ -101,7 +101,7 @@ function PutItAllTogether(svg, xScale, yScale, data) {
     .style("text-anchor", "end");
 }
 function UpdateData(svg, xScale, yScale, data) {
-  console.log(data);
+  //console.log(data);
   svg
     .selectAll("rect")
     .data(data)

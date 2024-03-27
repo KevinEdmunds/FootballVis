@@ -5,7 +5,7 @@ async function CollectDataForVis2() {
   SortByHomeOrAway(totalData);
   //console.log(totalData);
   GetTeamNames(totalData);
-  let sortedData = GetStatsForSpecTeam(totalData, "Arsenal");
+  let sortedData = GetStatsForSpecTeam(totalData, "Liverpool");
   CreateVis2(sortedData);
 }
 
@@ -30,8 +30,6 @@ function SortByHomeOrAway(data) {
   return sortedData;
 }
 
-/*----------------------------------------------sectiion being worked on -----------------------------------*/
-
 function GetStatsForSpecTeam(data, name) {
   let sortedData;
 
@@ -45,7 +43,7 @@ function GetStatsForSpecTeam(data, name) {
       }
     }
   }
-  console.log(index);
+  //console.log(index);
   sortedData = [
     {
       location: "Home Wins",
@@ -72,7 +70,7 @@ function GetStatsForSpecTeam(data, name) {
       result: data[index].losses.away,
     },
   ];
-  //sconsole.log(sortedData);
+  console.log(sortedData);
   return sortedData;
 }
 
@@ -100,7 +98,7 @@ function CreateVis2(data) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // Add X axis
-  var x = d3.scaleLinear().domain([0, 13000]).range([0, width]);
+  var x = d3.scaleLinear().domain([0, 19]).range([0, width]);
   svg
     .append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -115,7 +113,7 @@ function CreateVis2(data) {
     .range([0, height])
     .domain(
       data.map(function (d) {
-        return d.Country;
+        return d.location;
       })
     )
     .padding(0.1);
@@ -129,10 +127,10 @@ function CreateVis2(data) {
     .append("rect")
     .attr("x", x(0))
     .attr("y", function (d) {
-      return y(d.Country);
+      return y(d.location);
     })
     .attr("width", function (d) {
-      return x(d.Value);
+      return x(d.result);
     })
     .attr("height", y.bandwidth())
     .attr("fill", "#69b3a2");
