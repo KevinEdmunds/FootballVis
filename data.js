@@ -1,5 +1,5 @@
 let type = "matches";
-let competition = "2";
+let competition = "12";
 let season = "27";
 
 let url = `https://raw.githubusercontent.com/statsbomb/open-data/master/data/${type}/${competition}/${season}.json`;

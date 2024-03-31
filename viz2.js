@@ -3,9 +3,9 @@ CollectDataForVis2();
 async function CollectDataForVis2() {
   let totalData = await processData();
   SortByHomeOrAway(totalData);
-  //console.log(totalData);
-  GetTeamNames(totalData);
-  let sortedData = GetStatsForSpecTeam(totalData, "Liverpool");
+  console.log(totalData);
+  //GetTeamNames(totalData);
+  let sortedData = GetStatsForSpecTeam(totalData, totalData[0].name);
   CreateVis2(sortedData);
 }
 
@@ -30,6 +30,12 @@ function SortByHomeOrAway(data) {
   return sortedData;
 }
 
+function ChangeTeam(totalData, name) {
+  let sortedData = GetStatsForSpecTeam(totalData, name);
+  console.log(sortedData);
+  CreateVis2(sortedData);
+}
+
 function GetStatsForSpecTeam(data, name) {
   let sortedData;
 
@@ -43,6 +49,7 @@ function GetStatsForSpecTeam(data, name) {
       }
     }
   }
+  console.log(data[index]);
   //console.log(index);
   sortedData = [
     {
@@ -70,7 +77,7 @@ function GetStatsForSpecTeam(data, name) {
       result: data[index].losses.away,
     },
   ];
-  console.log(sortedData);
+  //console.log(sortedData);
   return sortedData;
 }
 
@@ -80,6 +87,7 @@ function GetTeamNames(data) {
   sortedData = data.map((team) => {
     return team.name;
   }); //console.log(sortedData);
+  return sortedData;
 }
 
 function CreateVis2(data) {
@@ -133,5 +141,5 @@ function CreateVis2(data) {
       return x(d.result);
     })
     .attr("height", y.bandwidth())
-    .attr("fill", "#69b3a2");
+    .attr("fill", "#9a9a9a");
 }
