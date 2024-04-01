@@ -1,9 +1,18 @@
 CollectDataForVis2();
+//let create = CreateVis2();
+let hasRun;
+var marginVis2 = { top: 20, right: 30, bottom: 40, left: 90 },
+  widthVis2 = 460 - marginVis2.left - marginVis2.right,
+  heightVis2 = 400 - marginVis2.top - marginVis2.bottom;
+var svg;
+var x;
+var y;
+var u;
 
 async function CollectDataForVis2() {
   let totalData = await processData();
   SortByHomeOrAway(totalData);
-  console.log(totalData);
+  //console.log(totalData);
   //GetTeamNames(totalData);
   let sortedData = GetStatsForSpecTeam(totalData, totalData[0].name);
   CreateVis2(sortedData);
@@ -32,7 +41,7 @@ function SortByHomeOrAway(data) {
 
 function ChangeTeam(totalData, name) {
   let sortedData = GetStatsForSpecTeam(totalData, name);
-  console.log(sortedData);
+  //console.log(sortedData);
   CreateVis2(sortedData);
 }
 
@@ -49,8 +58,7 @@ function GetStatsForSpecTeam(data, name) {
       }
     }
   }
-  console.log(data[index]);
-  //console.log(index);
+
   sortedData = [
     {
       location: "Home Wins",
@@ -91,55 +99,70 @@ function GetTeamNames(data) {
 }
 
 function CreateVis2(data) {
+  if (hasRun) {
+    console.log("is NOT running for the first time");
+    UpdateVis(data, svg, x, y);
+  } else {
+    console.log("is running for the first time");
+    hasRun = true;
+
+    //Create SVG
+    svg = d3
+      .select(".second")
+      .append("svg")
+      .attr("width", widthVis2 + marginVis2.left + marginVis2.right)
+      .attr("height", heightVis2 + marginVis2.top + marginVis2.bottom)
+      .append("g")
+      .attr(
+        "transform",
+        "translate(" + marginVis2.left + "," + marginVis2.top + ")"
+      );
+
+    // Add X axis
+    x = d3.scaleLinear().domain([0, 19]).range([0, widthVis2]);
+    svg
+      .append("g")
+      .attr("transform", "translate(0," + heightVis2 + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
+    // Y axis
+    y = d3
+      .scaleBand()
+      .range([0, heightVis2])
+      .domain(
+        data.map(function (d) {
+          return d.location;
+        })
+      )
+      .padding(0.1);
+    svg.append("g").call(d3.axisLeft(y));
+
+    UpdateVis(data, svg, x, y);
+  }
   //dimensions
-  var margin = { top: 20, right: 30, bottom: 40, left: 90 },
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
 
-  //Create SVG
-  var svg = d3
-    .select(".second")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  function UpdateVis(data, svg, x, y) {
+    //console.log("at this paer");
+    u = svg.selectAll("rect").data(data);
 
-  // Add X axis
-  var x = d3.scaleLinear().domain([0, 19]).range([0, width]);
-  svg
-    .append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("text-anchor", "end");
+    u.exit().remove();
 
-  // Y axis
-  var y = d3
-    .scaleBand()
-    .range([0, height])
-    .domain(
-      data.map(function (d) {
-        return d.location;
+    u.enter()
+      .append("rect")
+      .merge(u)
+      .transition()
+      .duration(1000)
+      .attr("x", x(0))
+      .attr("y", function (d) {
+        return y(d.location);
       })
-    )
-    .padding(0.1);
-  svg.append("g").call(d3.axisLeft(y));
-
-  //Bars
-  svg
-    .selectAll("myRect")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("x", x(0))
-    .attr("y", function (d) {
-      return y(d.location);
-    })
-    .attr("width", function (d) {
-      return x(d.result);
-    })
-    .attr("height", y.bandwidth())
-    .attr("fill", "#9a9a9a");
+      .attr("width", function (d) {
+        return x(d.result);
+      })
+      .attr("height", y.bandwidth())
+      .attr("fill", "#9a9a9a");
+  }
 }

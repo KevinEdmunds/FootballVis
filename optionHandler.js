@@ -4,7 +4,7 @@ CollectData();
 async function CollectData() {
   let totalData = await processData();
   let sortedData = GetTeamNames(totalData);
-  console.log(sortedData);
+  //console.log(sortedData);
 
   sortedData.forEach((option) => {
     // Create a new option element for each item in the array
