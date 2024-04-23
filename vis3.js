@@ -55,7 +55,21 @@ function CreateVis3(dataset) {
     })
     .attr("cy", (d) => {
       let pos = parseInt(d[1]) * 10;
-      //console.log(pos);
+      return height - pos;
+    });
+
+  svg
+    .selectAll("myText")
+    .data(dataset)
+    .enter()
+    .append("g")
+    .append("text")
+    .text((d) => {
+      return d.name;
+    })
+    .attr("x", 800)
+    .attr("y", (d) => {
+      var pos = d.endPoints[37][1] * 10;
       return height - pos;
     });
 }
