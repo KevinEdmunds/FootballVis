@@ -5,14 +5,20 @@ async function CollectDataForVis3() {
   let totalData = await processData();
   //console.log(totalData);
   let sortedData = ArrangeData(totalData);
-  console.log(sortedData);
+  //console.log(sortedData);
   CreateVis3(sortedData);
 }
 
 function ArrangeData(data) {
-  let sortedData = data.map((d) => {
-    return { name: d.name, endPoints: d.gameweekOutcomes };
+  let sortedData = data.map((d, i) => {
+    return {
+      name: d.name,
+      endPoints: d.gameweekOutcomes.map((d, i) => {
+        return [i + 1, d];
+      }),
+    };
   });
+  console.log(sortedData);
   return sortedData;
 }
 
@@ -31,8 +37,6 @@ function CreateVis3(dataset) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  //console.log(dataset[1].endPoints);
-
   var circles = svg
     .selectAll("cheese")
     .data(dataset)
@@ -40,18 +44,18 @@ function CreateVis3(dataset) {
     .append("g")
     .selectAll("circle")
     .data((d) => {
-      console.log(d.endPoints);
       return d.endPoints;
     })
     .enter()
     .append("circle")
     .attr("r", 2)
-    .attr("cx", (d, i) => {
-      let pos = i * 20;
+    .attr("cx", (d) => {
+      let pos = d[0] * 20;
       return pos;
     })
     .attr("cy", (d) => {
-      let pos = d * 10;
+      let pos = parseInt(d[1]) * 10;
+      //console.log(pos);
       return height - pos;
     });
 }
