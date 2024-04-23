@@ -100,10 +100,8 @@ function GetTeamNames(data) {
 
 function CreateVis2(data) {
   if (hasRun) {
-    console.log("is NOT running for the first time");
     UpdateVis(data, svg, x, y);
   } else {
-    console.log("is running for the first time");
     hasRun = true;
 
     //Create SVG
@@ -119,14 +117,6 @@ function CreateVis2(data) {
       );
 
     // Add X axis
-    x = d3.scaleLinear().domain([0, 19]).range([0, widthVis2]);
-    svg
-      .append("g")
-      .attr("transform", "translate(0," + heightVis2 + ")")
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-      .attr("transform", "translate(-10,0)rotate(-45)")
-      .style("text-anchor", "end");
 
     // Y axis
     y = d3
@@ -137,15 +127,33 @@ function CreateVis2(data) {
           return d.location;
         })
       )
-      .padding(0.1);
+      .padding(0.5);
     svg.append("g").call(d3.axisLeft(y));
 
     UpdateVis(data, svg, x, y);
   }
-  //dimensions
 
   function UpdateVis(data, svg, x, y) {
-    //console.log("at this paer");
+    svg.selectAll(".xAxis").remove();
+    x = d3
+      .scaleLinear()
+      .domain([
+        0,
+        d3.max(data, function (d) {
+          return d.result;
+        }),
+      ])
+      .range([0, widthVis2]);
+
+    svg
+      .append("g")
+      .attr("class", "xAxis")
+      .attr("transform", "translate(0," + heightVis2 + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
     u = svg.selectAll("rect").data(data);
 
     u.exit().remove();
@@ -163,6 +171,14 @@ function CreateVis2(data) {
         return x(d.result);
       })
       .attr("height", y.bandwidth())
-      .attr("fill", "#9a9a9a");
+      .attr("fill", function (d) {
+        if (d.location.split(" ").pop() == "Wins") {
+          return "#94ffb2";
+        } else if (d.location.split(" ").pop() == "Draws") {
+          return "#f4ff94";
+        } else if (d.location.split(" ").pop() == "Losses") {
+          return "#ff9494";
+        }
+      });
   }
 }

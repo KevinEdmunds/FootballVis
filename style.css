@@ -7,3 +7,28 @@ select {
   display: block;
   margin: auto;
 }
+h1 {
+  text-align: center;
+}
+body {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+section {
+  padding: 20px 100px;
+}
+
+select:focus {
+  outline: none; /* Remove default outline */
+}
+
+option {
+  background-color: #ff0000;
+}
+
+option:checked {
+  background-color: #ddd;
+  color: #000;
+}

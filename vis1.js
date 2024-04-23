@@ -33,6 +33,7 @@ function getWinsArray(totalData, winType) {
 
 function BuildVisualization(sortedData, svg) {
   let data;
+  //console.log(sortedData);
   svg = CreateSVG();
   let xScale = CreateXScale(sortedData, svg);
   let yScale = CreateYScale(sortedData, svg);
@@ -53,7 +54,12 @@ function CreateSVG() {
   return svg;
 }
 function CreateYScale(data, svg) {
-  yScale = d3.scaleLinear().domain([0, 25]).range([height, 0]);
+  //console.log(data);
+  let maxWins = Math.max(...data.map((d) => d.wins));
+
+  //console.log(maxWins);
+
+  yScale = d3.scaleLinear().domain([0, maxWins]).range([height, 0]);
   svg.append("g").call(d3.axisLeft(yScale));
   return yScale;
 }

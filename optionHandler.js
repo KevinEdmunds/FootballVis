@@ -15,6 +15,7 @@ async function CollectData() {
 
     // Optionally, set a value attribute for the option (useful for form submissions)
     optionElement.value = option;
+    optionElement.className = "cheese";
 
     // Append the option element to the dropdown
     dropdown.appendChild(optionElement);
