@@ -34,14 +34,24 @@ function CreateVis3(dataset) {
   //console.log(dataset[1].endPoints);
 
   var circles = svg
+    .selectAll("cheese")
+    .data(dataset)
+    .enter()
+    .append("g")
     .selectAll("circle")
-    .data(dataset[1].endPoints)
+    .data((d) => {
+      console.log(d.endPoints);
+      return d.endPoints;
+    })
     .enter()
     .append("circle")
     .attr("r", 2)
     .attr("cx", (d, i) => {
       let pos = i * 20;
-      return width - pos;
+      return pos;
     })
-    .attr("cy", (d) => d * 10);
+    .attr("cy", (d) => {
+      let pos = d * 10;
+      return height - pos;
+    });
 }
