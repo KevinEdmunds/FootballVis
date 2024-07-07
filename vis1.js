@@ -13,7 +13,7 @@ let xScale;
 
 async function collectData(home) {
   let totalData = await processData();
-
+  console.log(totalData);
   let sortedData = getWinsArray(totalData, home);
   let svg;
 

@@ -26,7 +26,7 @@ function CreateVis3(dataset) {
   // set the dimensions and margins of the graph
   var margin = { top: 10, right: 10, bottom: 10, left: 10 },
     width = 1000 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+    height = 1600 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   var svg = d3
@@ -54,9 +54,23 @@ function CreateVis3(dataset) {
       return pos;
     })
     .attr("cy", (d) => {
-      let pos = parseInt(d[1]) * 10;
+      let pos = parseInt(d[1]) * 15;
       return height - pos;
     });
+
+  /*svg
+    .selectAll("myLine")
+    .data(dataset)
+    .enter()
+    .append("path")
+    .attr("d", (d) => {
+      return line(d.values);
+    })
+    .attr("stroke", function (d) {
+      return myColor(d.name);
+    })
+    .style("stroke-width", 4)
+    .style("fill", "none");*/
 
   svg
     .selectAll("myText")
@@ -69,7 +83,7 @@ function CreateVis3(dataset) {
     })
     .attr("x", 800)
     .attr("y", (d) => {
-      var pos = d.endPoints[37][1] * 10;
+      var pos = d.endPoints[37][1] * 15;
       return height - pos;
     });
 }

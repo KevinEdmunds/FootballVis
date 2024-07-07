@@ -1,4 +1,5 @@
-const dropdown = document.getElementById("myDropdown");
+const dropdownTeamSelect = document.getElementById("myDropdown");
+const dropdownSeasonSelect = document.getElementById("seasonDropdown");
 
 CollectData();
 async function CollectData() {
@@ -15,15 +16,18 @@ async function CollectData() {
 
     // Optionally, set a value attribute for the option (useful for form submissions)
     optionElement.value = option;
-    optionElement.className = "cheese";
 
     // Append the option element to the dropdown
-    dropdown.appendChild(optionElement);
+    dropdownTeamSelect.appendChild(optionElement);
   });
 
-  dropdown.addEventListener("change", (event) => {
+  dropdownTeamSelect.addEventListener("change", (event) => {
     const selectedOption = event.target.value;
     //console.log(typeof selectedOption);
     ChangeTeam(totalData, selectedOption);
   });
+}
+
+async function DisplaySeason() {
+  //eventually, I want to be able to select/swap the seasons which are contained at different entpoints
 }
