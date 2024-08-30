@@ -19,6 +19,10 @@ body {
 section {
   padding: 20px 100px;
 }
+.slider {
+  width: 70%;
+  margin: 0 auto;
+}
 
 select:focus {
   outline: none; /* Remove default outline */

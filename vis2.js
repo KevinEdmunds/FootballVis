@@ -91,10 +91,9 @@ function GetStatsForSpecTeam(data, name) {
 
 //A misc function that might maybebecome useful later on
 function GetTeamNames(data) {
-  let sortedData;
-  sortedData = data.map((team) => {
+  let sortedData = data.map((team) => {
     return team.name;
-  }); //console.log(sortedData);
+  });
   return sortedData;
 }
 

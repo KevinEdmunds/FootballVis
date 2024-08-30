@@ -1,28 +1,34 @@
 CollectDataForVis3();
-//CreateVis3();
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function () {
+  output.innerHTML = this.value;
+  console.log(this.value);
+};
 
 async function CollectDataForVis3() {
   let totalData = await processData();
-  //console.log(totalData);
   let sortedData = ArrangeData(totalData);
-  //console.log(sortedData);
-  CreateVis3(sortedData);
+  CreateVis3(sortedData, 37);
 }
 
 function ArrangeData(data) {
   let sortedData = data.map((d, i) => {
     return {
       name: d.name,
-      endPoints: d.gameweekOutcomes.map((d, i) => {
-        return [i + 1, d];
+      points: d.gameweekOutcomes.map((d, i) => {
+        return d;
       }),
     };
   });
-  console.log(sortedData);
   return sortedData;
 }
 
-function CreateVis3(dataset) {
+/*function CreateVis3(dataset) {
+  console.log(dataset);
   // set the dimensions and margins of the graph
   var margin = { top: 10, right: 10, bottom: 10, left: 10 },
     width = 1000 - margin.left - margin.right,
@@ -58,20 +64,6 @@ function CreateVis3(dataset) {
       return height - pos;
     });
 
-  /*svg
-    .selectAll("myLine")
-    .data(dataset)
-    .enter()
-    .append("path")
-    .attr("d", (d) => {
-      return line(d.values);
-    })
-    .attr("stroke", function (d) {
-      return myColor(d.name);
-    })
-    .style("stroke-width", 4)
-    .style("fill", "none");*/
-
   svg
     .selectAll("myText")
     .data(dataset)
@@ -86,4 +78,32 @@ function CreateVis3(dataset) {
       var pos = d.endPoints[37][1] * 15;
       return height - pos;
     });
+}*/
+
+function CreateVis3(dataset, index) {
+  var margin = 10,
+    width = 1000 - 2 * margin,
+    height = 1600 - 2 * margin;
+
+  const pack = d3
+    .pack()
+    .size([width - margin, height - margin])
+    .padding(5);
+
+  // Create the hierarchy from the data
+  const hierarchy = d3.hierarchy({ children: dataset }).sum((d) => d.points);
+
+  // Compute the pack layout
+  const root = pack(hierarchy);
+
+  const svg = d3.select(".third").attr("width", width).attr("height", height);
+
+  const bubbles = svg
+    .selectAll(".bubble")
+    .data(root.descendants().slice(1))
+    .enter()
+    .append("g")
+    .attr("class", "bubble");
+
+  bubbles.append("circle");
 }
